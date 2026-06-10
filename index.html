@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Xypher RevOps — End-User Guide</title>
+<style>
+  :root{
+    --navy:#0a1f3c; --navy2:#16386b; --acq:#13315c;
+    --pivot:#18a0e0; --ret1:#1aa3df; --ret2:#13c0f5;
+    --ink:#172534; --muted:#5d6f80; --line:#e4eaf1;
+    --bg:#f5f8fc; --card:#ffffff; --accent:#1c74c4;
+    --good:#1e9e62; --good-bg:#e7f6ee; --warn:#c9821a; --warn-bg:#fbf1df;
+    --chip:#eef4fb; --shadow:0 1px 3px rgba(16,42,76,.08),0 8px 28px rgba(16,42,76,.07);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  h1,h2,h3{line-height:1.2;margin:0}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ---------- HERO ---------- */
+  header.hero{background:linear-gradient(135deg,#08172c 0%,#13315c 55%,#1a5fa0 100%);color:#fff;padding:54px 0 30px}
+  .hero .eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#7fb4e6;font-weight:700}
+  .hero h1{font-size:40px;font-weight:800;margin:10px 0 8px;letter-spacing:-.02em}
+  .hero p.lead{font-size:18px;color:#cfe1f4;max-width:760px;margin:0 0 22px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px}
+  .meta .pill{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:7px 14px;border-radius:999px;font-size:13px;color:#eaf2fb}
+  .meta .pill b{color:#fff}
+
+  /* ---------- BOWTIE NAV ---------- */
+  .bowtie-section{background:linear-gradient(180deg,#13315c 0%,#0e2748 100%);padding:14px 0 30px;color:#fff;position:relative}
+  .bowtie-wrap{position:relative}
+  .stage-labels{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px}
+  .stage-labels button{background:none;border:0;color:#cdddf0;font-weight:800;font-size:14px;letter-spacing:.04em;
+    text-transform:uppercase;cursor:pointer;padding:10px 4px;border-radius:8px;transition:.18s;position:relative}
+  .stage-labels button:hover{color:#fff;background:rgba(255,255,255,.07)}
+  .stage-labels button.active{color:#fff}
+  .stage-labels button.active::after{content:"";position:absolute;left:50%;bottom:2px;transform:translateX(-50%);
+    width:26px;height:3px;border-radius:3px;background:var(--pivot)}
+  .bowtie-svg{width:100%;height:auto;display:block}
+  .side-labels{display:flex;justify-content:space-between;margin-top:4px;padding:0 6%}
+  .side-labels span{font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase}
+  .side-labels .acq{color:#5e8fc4}.side-labels .ret{color:#34b6ec}
+  .hint{ text-align:center;color:#9fc0e0;font-size:13px;margin-top:14px}
+  .hint kbd{background:rgba(255,255,255,.12);border-radius:5px;padding:1px 7px;font-size:12px}
+
+  /* ---------- INTRO STRIP ---------- */
+  .intro{padding:40px 0 6px}
+  .intro .grid{display:grid;grid-template-columns:1.4fr 1fr;gap:26px;align-items:start}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 26px}
+  .panel h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:12px}
+  .legend-row{display:flex;gap:12px;align-items:flex-start;margin:10px 0;font-size:14.5px}
+  .legend-row .ic{flex:0 0 30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:15px}
+  .ic.you{background:#e9f1fb;color:#1c74c4}.ic.sys{background:#e7f6ee;color:#1e9e62}.ic.look{background:#fbf1df;color:#c9821a}
+  .story{background:linear-gradient(135deg,#102a4c,#1a5fa0);color:#fff;border:0}
+  .story h3{color:#9fc8ee}
+  .story p{color:#dceaf7;font-size:14.5px;margin:8px 0}
+  .story .who{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+  .story .who .av{width:46px;height:46px;border-radius:50%;background:#2f6cae;display:grid;place-items:center;font-weight:800;font-size:18px}
+  .story .who b{font-size:16px}.story .who small{color:#a9c7e6;display:block}
+
+  /* ---------- STAGE SECTIONS ---------- */
+  main{padding:14px 0 40px}
+  .stage{padding:40px 0;border-top:1px solid var(--line)}
+  .stage-head{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+  .stage-num{flex:0 0 56px;height:56px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:22px}
+  .badge-side{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+  .badge-acq{background:#e8eef7;color:#1d3d6b}.badge-ret{background:#e2f4fc;color:#0b7bb0}
+  .stage h2{font-size:28px;font-weight:800;letter-spacing:-.01em}
+  .stage .purpose{color:var(--muted);font-size:17px;margin:8px 0 22px;max-width:820px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:18px}
+  .card .lbl{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .card .lbl .dot{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:14px}
+  .lbl.you .dot{background:#e9f1fb;color:#1c74c4}.lbl.you{color:#1c74c4}
+  .lbl.sys .dot{background:#e7f6ee;color:#1e9e62}.lbl.sys{color:#1a8a55}
+  ul.clean{list-style:none;margin:0;padding:0}
+  ul.clean li{padding:9px 0;border-bottom:1px dashed var(--line);font-size:15px}
+  ul.clean li:last-child{border-bottom:0}
+  .auto{padding:11px 0;border-bottom:1px dashed var(--line)}
+  .auto:last-child{border-bottom:0}
+  .auto .n{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px}
+  .auto .n .tag{font-size:10px;font-weight:800;letter-spacing:.05em;padding:2px 7px;border-radius:5px;background:var(--chip);color:#3a6aa0;text-transform:uppercase}
+  .auto .tag.sched{background:#efe9fb;color:#6b3fb0}.auto .tag.apex{background:#fdeae6;color:#c0492b}.auto .tag.screen{background:#e6f7f0;color:#147a52}
+  .auto .d{font-size:13.5px;color:var(--muted);margin-top:3px}
+
+  /* screenshot */
+  figure{margin:0}
+  .shot{border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);cursor:zoom-in;background:#fff}
+  .shot img{width:100%;display:block}
+  figcaption{font-size:13px;color:var(--muted);margin-top:8px;text-align:center}
+
+  /* scorecards */
+  .scorecards{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+  .score{flex:1 1 120px;border-radius:12px;padding:14px 16px;color:#fff;min-width:120px}
+  .score .k{font-size:12px;letter-spacing:.05em;text-transform:uppercase;opacity:.9}
+  .score .v{font-size:30px;font-weight:800;margin-top:2px}
+  .score .s{font-size:12.5px;opacity:.92;margin-top:2px}
+  .score.a{background:linear-gradient(135deg,#1e9e62,#127a4a)}
+  .score.blue{background:linear-gradient(135deg,#1c74c4,#0f4f93)}
+  .score.cyan{background:linear-gradient(135deg,#18a0e0,#0d77ad)}
+  .score.amber{background:linear-gradient(135deg,#e0962a,#b9701a)}
+  .grades{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .gr{font-size:12.5px;background:var(--chip);border-radius:8px;padding:7px 11px}
+  .gr b{display:block;font-size:16px;color:var(--ink)}
+
+  .meddpicc{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+  .md{background:var(--chip);border-radius:9px;padding:10px;text-align:center;font-size:12px}
+  .md .t{font-weight:700;color:var(--ink)}
+  .md .st{margin-top:4px;font-size:11px;font-weight:700;padding:2px 6px;border-radius:5px;display:inline-block}
+  .st.c{background:var(--good-bg);color:var(--good)}.st.p{background:var(--warn-bg);color:var(--warn)}
+
+  .callout{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:8px;padding:13px 16px;font-size:14px;margin-top:6px;color:#7a5417}
+  .callout b{color:#5e3f0f}
+  .callout.tip{background:#e9f1fb;border-color:var(--accent);color:#1c4a78}.callout.tip b{color:#123a63}
+
+  /* ---------- REFERENCE TABLE ---------- */
+  .ref{padding:40px 0}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+  th{background:#f0f5fb;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#3a5780}
+  tr:last-child td{border-bottom:0}
+  td .stagetag{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;white-space:nowrap}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#0c2342;color:#b9cde2;padding:34px 0;font-size:14px}
+  footer b{color:#fff}
+  footer a{color:#79b6ec}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lb{position:fixed;inset:0;background:rgba:(8,18,32,.88);background:rgba(8,18,32,.9);display:none;
+    place-items:center;z-index:90;padding:30px;cursor:zoom-out}
+  .lb.open{display:grid}
+  .lb img{max-width:95%;max-height:92vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+  /* sticky mini-nav */
+  .ticker{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);display:none}
+  .ticker .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 24px}
+  .ticker button{flex:0 0 auto;border:0;background:none;font-size:12.5px;font-weight:700;color:var(--muted);
+    padding:7px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .ticker button.active{background:var(--navy);color:#fff}
+
+  @media(max-width:860px){
+    .hero h1{font-size:30px}
+    .intro .grid,.cols{grid-template-columns:1fr}
+    .stage-labels{grid-template-columns:repeat(4,1fr)}
+    .stage-labels button{font-size:11px}
+    .meddpicc{grid-template-columns:repeat(2,1fr)}
+    .stage h2{font-size:23px}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Xypher · RevOps Operating System</div>
+    <h1>The End-User Guide to Your Revenue Engine</h1>
+    <p class="lead">Everything your Salesforce does for you — mapped to the journey a customer actually
+      travels, from first touch to renewal. Follow one real deal through all seven stages of the bowtie
+      and see exactly where the automation kicks in, so you can focus on selling.</p>
+    <div class="meta">
+      <span class="pill">For&nbsp;<b>Sellers, SDRs &amp; CSMs</b></span>
+      <span class="pill">Org&nbsp;<b>Xypher (Sandbox)</b></span>
+      <span class="pill"><b>84</b>&nbsp;live automations</span>
+      <span class="pill"><b>7</b>&nbsp;bowtie stages</span>
+      <span class="pill">Read time&nbsp;<b>~10 min</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- INTERACTIVE BOWTIE -->
+<section class="bowtie-section">
+  <div class="wrap bowtie-wrap">
+    <div class="stage-labels" id="stageLabels">
+      <button data-go="awareness">Awareness</button>
+      <button data-go="education">Education</button>
+      <button data-go="selection">Selection</button>
+      <button data-go="commit">Commit</button>
+      <button data-go="onboard">Onboard</button>
+      <button data-go="impact">Impact</button>
+      <button data-go="grow">Grow</button>
+    </div>
+    <svg class="bowtie-svg" viewBox="0 0 1000 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <linearGradient id="gacq" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#0a1f3c"/><stop offset="1" stop-color="#1d4f8c"/>
+        </linearGradient>
+        <linearGradient id="gret" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#1593cf"/><stop offset="1" stop-color="#13c6f7"/>
+        </linearGradient>
+      </defs>
+      <!-- acquisition (left funnel) -->
+      <polygon class="seg" data-go="awareness" points="30,20 470,95 470,125 30,200" fill="url(#gacq)" opacity="1"/>
+      <!-- pivot node -->
+      <circle cx="500" cy="110" r="20" fill="#13c6f7"/>
+      <!-- retention (right funnel) -->
+      <polygon class="seg" data-go="grow" points="530,95 970,20 970,200 530,125" fill="url(#gret)"/>
+      <!-- divider -->
+      <line x1="500" y1="6" x2="500" y2="214" stroke="#3a5e8c" stroke-width="2" stroke-dasharray="3 6"/>
+    </svg>
+    <div class="side-labels">
+      <span class="acq">◣ Acquisition</span>
+      <span class="ret">Retention &amp; Growth ◢</span>
+    </div>
+    <div class="hint">Click any stage above to jump to it · click a screenshot to enlarge</div>
+  </div>
+</section>
+
+<!-- sticky ticker -->
+<div class="ticker" id="ticker">
+  <div class="wrap">
+    <button data-go="awareness">1 · Awareness</button>
+    <button data-go="education">2 · Education</button>
+    <button data-go="selection">3 · Selection</button>
+    <button data-go="commit">4 · Commit</button>
+    <button data-go="onboard">5 · Onboard</button>
+    <button data-go="impact">6 · Impact</button>
+    <button data-go="grow">7 · Grow</button>
+    <button data-go="reference">Reference</button>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="wrap grid">
+    <div class="panel">
+      <h3>How to read this guide</h3>
+      <p style="margin-top:0;color:var(--muted)">Each stage answers two questions: <b>what you do</b>, and
+        <b>what the system does for you automatically</b> the moment you do it. You never trigger these by
+        hand — they fire on save, on schedule, or on a record change.</p>
+      <div class="legend-row"><div class="ic you">👤</div><div><b>What you do</b> — the clicks and judgement that are yours to make.</div></div>
+      <div class="legend-row"><div class="ic sys">⚙️</div><div><b>What the system does</b> — automations that score, stamp, route, sync and roll up behind the scenes.</div></div>
+      <div class="legend-row"><div class="ic look">🔎</div><div><b>Look for</b> — the field or signal on the page that proves the automation ran.</div></div>
+    </div>
+    <div class="panel story">
+      <h3>Follow one real deal</h3>
+      <div class="who">
+        <div class="av">DW</div>
+        <div><b>Dana Whitfield</b><small>VP, Operations &amp; Supply Chain</small></div>
+      </div>
+      <p><b>Northwind Logistics</b> — a 2,400-person logistics firm — joins us as a webinar lead and
+      travels the entire bowtie: scored, qualified, won at <b>£120k</b>, onboarded, and queued for an
+      <b>£132k renewal</b>. Every screenshot below is this real journey in the Xypher org.</p>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+<!-- 1 AWARENESS -->
+<section class="stage" id="awareness">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#0a1f3c,#1a3f70)">1</div>
+    <div>
+      <span class="badge-side badge-acq">Acquisition</span>
+      <h2 style="margin-top:6px">Awareness</h2>
+    </div>
+  </div>
+  <p class="purpose">A new lead enters your world. Your only job is to capture who they are — the system
+    immediately starts a tracked lifecycle and attributes the source.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Create or own a new lead — web form, event list, or manual entry.</li>
+          <li>Fill the essentials: <b>name, company, title, lead source</b>.</li>
+          <li>Nothing else — no manual staging, no scoring by hand.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">Lead — Set Default Lifecycle Stage</div><div class="d">Stamps the lead at <b>“1 – Inquiry”</b> automatically so it enters the funnel cleanly.</div></div>
+        <div class="auto"><div class="n">Lifecycle — Create &amp; Link (Lead)</div><div class="d">Spins up a dedicated <b>Lifecycle</b> record and links it — this is the spine that tracks every stage date from here on.</div></div>
+        <div class="auto"><div class="n">Lead — Firmographic Banding</div><div class="d">Converts raw employee count into a clean <b>Employee Band</b> (e.g. 1000+).</div></div>
+        <div class="auto"><div class="n">Lead — Scorecard Auto-Assignment</div><div class="d">Attaches the active <b>ICP Scorecard</b> so grading can run.</div></div>
+        <div class="auto"><div class="n">Lead Attribution Engine</div><div class="d">Creates a <b>Target Attribution</b> record crediting the campaign / source that generated the lead.</div></div>
+        <div class="auto"><div class="n">Lead — Foundation Governance</div><div class="d">Enforces clean status values and initialises foundational fields on create.</div></div>
+      </div>
+    </div>
+    <div>
+      <figure>
+        <div class="shot" data-zoom="assets/01-lead.png"><img src="assets/01-lead.png" alt="Dana Whitfield lead record"></div>
+        <figcaption>Dana Whitfield enters as a Webinar lead — firmographics captured, lifecycle started.</figcaption>
+      </figure>
+      <div class="callout look" style="background:#fbf1df;border-left:4px solid var(--warn)">
+        🔎 <b>Look for:</b> the <b>Lifecycle</b> lookup populated on the lead, the <b>Lead Source</b> = Webinar, and an
+        <b>Employee Band</b> already filled — all three appeared without you touching them.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 EDUCATION -->
+<section class="stage" id="education">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#13315c,#1e5391)">2</div>
+    <div>
+      <span class="badge-side badge-acq">Acquisition</span>
+      <h2 style="margin-top:6px">Education</h2>
+    </div>
+  </div>
+  <p class="purpose">The lead is nurtured and continuously scored. The system tells you <i>how good a fit</i>
+    this is and <i>how engaged</i> they are — so you spend time on the right people.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Log activities, calls and emails as you nurture.</li>
+          <li>Read the <b>ICP Grade</b> and <b>BANT Score</b> to prioritise.</li>
+          <li>Advance the lead to <b>MQL</b> when marketing-qualified.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">ICP Firmographic &amp; Technographic Grade</div><div class="d">Grades industry, size &amp; tech-stack fit A–D from the lead’s firmographics.</div></div>
+        <div class="auto"><div class="n">ICP Persona Grade</div><div class="d">Matches the job title against your ICP persona map.</div></div>
+        <div class="auto"><div class="n">ICP Composite &amp; Scorecard Grade</div><div class="d">Blends all sub-grades into a single <b>ICP Grade</b> + label (e.g. “Hot ICP”).</div></div>
+        <div class="auto"><div class="n">Lead — BANT Score Calculation</div><div class="d">Weighs Budget · Authority · Need · Timeline into a 0–100 <b>BANT Score</b>.</div></div>
+        <div class="auto"><div class="n">Lifecycle Stage Engine + SLA Start <span class="tag sched">scheduled support</span></div><div class="d">Stamps milestone dates as the lead moves Inquiry → Engaged → MQL, and starts a <b>2-day SLA clock</b> at MQL.</div></div>
+        <div class="auto"><div class="n">Behavioural &amp; Grade Recalculation <span class="tag sched">nightly</span></div><div class="d">Re-scores engagement (activities, campaigns, intent, web visits) every night so grades never go stale.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="lbl sys" style="margin-bottom:16px"><span class="dot">📊</span>What the scoring produced for Dana</div>
+        <div class="scorecards">
+          <div class="score a"><div class="k">ICP Grade</div><div class="v">A</div><div class="s">Hot ICP</div></div>
+          <div class="score blue"><div class="k">BANT</div><div class="v">100</div><div class="s">Fully Qualified</div></div>
+          <div class="score cyan"><div class="k">Lifecycle</div><div class="v">MQL</div><div class="s">SLA running</div></div>
+        </div>
+        <div class="grades">
+          <div class="gr">Firmographic<b>A</b></div>
+          <div class="gr">Persona<b>A</b></div>
+          <div class="gr">Technographic<b>A</b></div>
+          <div class="gr">Behavioural<b>B</b></div>
+        </div>
+      </div>
+      <div class="callout tip">💡 <b>Tip:</b> An <b>A / Hot ICP</b> with BANT 100 is your highest-priority lead.
+        The SLA timer means the clock is ticking — work it fast.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 SELECTION -->
+<section class="stage" id="selection">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#1b4b85,#2569ad)">3</div>
+    <div>
+      <span class="badge-side badge-acq">Acquisition</span>
+      <h2 style="margin-top:6px">Selection</h2>
+    </div>
+  </div>
+  <p class="purpose">Sales accepts the hand-off and qualifies the deal. The lead converts into an
+    Opportunity, and the system carries every scrap of context across so nothing is re-typed.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Accept the <b>SQL hand-off</b> and convert the lead.</li>
+          <li>Use the <b>“New Opportunity”</b> guided button for fast, clean creation.</li>
+          <li>Run discovery; fill <b>MEDDPICC</b> and set the <b>Next Step</b>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">Lead BDR → AE Hand-off Notification <span class="tag sched">async</span></div><div class="d">Emails the AE the moment the lead hits SQL and sets an acceptance-due date.</div></div>
+        <div class="auto"><div class="n">New Opportunity Intake <span class="tag screen">guided flow</span></div><div class="d">The <b>“New Opportunity”</b> button resolves the account, creates contacts and links contact roles in one guided screen.</div></div>
+        <div class="auto"><div class="n">Lead Conversion Data Stamping + Lifecycle Sync</div><div class="d">Copies source, BANT and lineage from the lead onto the new Contact &amp; Opportunity.</div></div>
+        <div class="auto"><div class="n">Opportunity — Name Stamp</div><div class="d">Auto-builds a structured name: <i>Account – Deal Type – Product – Region – Quarter</i>.</div></div>
+        <div class="auto"><div class="n">MEDDPICC + BANT Score &amp; Carry-Over</div><div class="d">Scores qualification 0–100 and carries the lead’s BANT answers into the deal.</div></div>
+        <div class="auto"><div class="n">Pipeline Entry &amp; Stage Velocity Stamp</div><div class="d">Marks when the deal entered pipeline and starts timing each stage.</div></div>
+        <div class="auto"><div class="n">Opportunity Contact Role Sync</div><div class="d">Auto-creates contact roles whenever you name a Champion, Decision-Maker or Economic Buyer.</div></div>
+      </div>
+    </div>
+    <div>
+      <figure>
+        <div class="shot" data-zoom="assets/03-opp-live.png"><img src="assets/03-opp-live.png" alt="Northwind live opportunity"></div>
+        <figcaption>The live deal — “Northwind Logistics – New Business – …” with deal-health cards, contact roles and £180k commercials.</figcaption>
+      </figure>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">🎯</span>MEDDPICC at a glance — 87.5 / 100 🟢</div>
+        <div class="meddpicc">
+          <div class="md"><div class="t">Metrics</div><div class="st c">Complete</div></div>
+          <div class="md"><div class="t">Econ. Buyer</div><div class="st c">Complete</div></div>
+          <div class="md"><div class="t">Decision Crit.</div><div class="st c">Complete</div></div>
+          <div class="md"><div class="t">Decision Proc.</div><div class="st c">Complete</div></div>
+          <div class="md"><div class="t">Paper Process</div><div class="st p">In Progress</div></div>
+          <div class="md"><div class="t">Identify Pain</div><div class="st c">Complete</div></div>
+          <div class="md"><div class="t">Champion</div><div class="st c">Complete</div></div>
+          <div class="md"><div class="t">Competition</div><div class="st p">In Progress</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 COMMIT -->
+<section class="stage" id="commit">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#1593cf,#13c6f7)">4</div>
+    <div>
+      <span class="badge-side badge-acq">Acquisition · the pivot</span>
+      <h2 style="margin-top:6px">Commit</h2>
+    </div>
+  </div>
+  <p class="purpose">The decisive stage of the bowtie. You drive the deal to close — the system handles the
+    commercial maths, governance, forecasting and commission so the win is clean and auditable.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Advance through <b>Negotiation → Commit</b>, keeping Next Steps current.</li>
+          <li>Confirm the commercials (Recurring Revenue, term).</li>
+          <li>Close the deal <b>Won</b> — and pick a <b>Closed Reason</b>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">Opportunity — Stage Change Governance</div><div class="d">Blocks stage advance until the required fields for that stage are complete.</div></div>
+        <div class="auto"><div class="n">Deal Amount Validation + Populate ARR</div><div class="d">Derives <b>MRR · ARR · ACV · TCV</b> from recurring revenue and term — no manual maths.</div></div>
+        <div class="auto"><div class="n">Weighted Forecast + Forecast Submission <span class="tag sched">nightly rollup</span></div><div class="d">Calculates weighted value and rolls your deals into the period forecast automatically.</div></div>
+        <div class="auto"><div class="n">Close-Won Velocity Freeze</div><div class="d">Stamps the true <b>Actual Close Date</b> the instant you win.</div></div>
+        <div class="auto"><div class="n">Sales Commission Calculator</div><div class="d">On Closed Won, computes tiered commission (5% / 8% / 12%) and logs a commission record.</div></div>
+        <div class="auto"><div class="n">Deal Approval <span class="tag apex">Apex</span></div><div class="d">Routes discount / terms approvals where required, then rolls the win up to the Account.</div></div>
+        <div class="auto"><div class="n">Next-Step Pipeline Hygiene <span class="tag sched">daily</span></div><div class="d">Creates follow-up tasks for overdue or upcoming next steps so deals never stall silently.</div></div>
+      </div>
+    </div>
+    <div>
+      <figure>
+        <div class="shot" data-zoom="assets/04-opp-won.png"><img src="assets/04-opp-won.png" alt="Closed won opportunity"></div>
+        <figcaption>Closed Won at £120k — “Great work! You’ve closed a successful deal.”</figcaption>
+      </figure>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">💷</span>What the win generated automatically</div>
+        <div class="scorecards">
+          <div class="score a"><div class="k">Won ARR</div><div class="v">£120k</div><div class="s">MRR £10k · 12-mo term</div></div>
+          <div class="score amber"><div class="k">Commission</div><div class="v">£8.9k</div><div class="s">Tiered · Pending</div></div>
+          <div class="score cyan"><div class="k">Account roll-up</div><div class="v">+1</div><div class="s">Won deal counted</div></div>
+        </div>
+      </div>
+      <div class="callout">🔎 <b>Look for:</b> a <b>Sales Commission</b> record, the Account’s
+        <b>Total Won Deals</b> ticking up, and a <b>Renewal</b> opportunity appearing — all from one “Closed Won”.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 ONBOARD -->
+<section class="stage" id="onboard">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#13a3df,#16b9ec)">5</div>
+    <div>
+      <span class="badge-side badge-ret">Retention &amp; Growth</span>
+      <h2 style="margin-top:6px">Onboard</h2>
+    </div>
+  </div>
+  <p class="purpose">The prospect is now a customer. The system rolls the win up to the account and seeds
+    the renewal, so the relationship starts on a clean, measurable footing.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Hand off to delivery / Customer Success.</li>
+          <li>Run the <b>onboarding kickoff</b> (your Next Step is already set from the win).</li>
+          <li>Confirm the account record reads cleanly for the CS team.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">Opportunity — Create Renewal on Close Won</div><div class="d">Generates the next-term <b>Renewal</b> opportunity automatically so it’s never forgotten.</div></div>
+        <div class="auto"><div class="n">Account Deal Summary Roll-up <span class="tag apex">Apex</span></div><div class="d">Aggregates won deals, amounts, first/last opportunity dates onto the <b>Account</b> in one bulk-safe pass.</div></div>
+        <div class="auto"><div class="n">Target Account Record Management &amp; Summary Sync</div><div class="d">If this is a strategic target account, stamps start dates and syncs the account summary.</div></div>
+      </div>
+    </div>
+    <div>
+      <figure>
+        <div class="shot" data-zoom="assets/05-account.png"><img src="assets/05-account.png" alt="Northwind account with rollups"></div>
+        <figcaption>The Northwind account — Dana linked, and the <b>Lifecycle &amp; Pipeline</b> roll-ups now populated (First / Last / Won opportunity dates).</figcaption>
+      </figure>
+      <div class="callout tip">💡 <b>Tip:</b> The roll-up fields on the account are your at-a-glance customer
+        snapshot — they update every time a deal changes, with zero manual maintenance.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 IMPACT -->
+<section class="stage" id="impact">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#13b0e6,#13c6f7)">6</div>
+    <div>
+      <span class="badge-side badge-ret">Retention &amp; Growth</span>
+      <h2 style="margin-top:6px">Impact</h2>
+    </div>
+  </div>
+  <p class="purpose">The customer realises value. The system measures engagement and attainment against
+    targets, turning every meeting into a tracked, attributed signal of health.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Run QBRs and value reviews; log meetings &amp; outcomes.</li>
+          <li>Watch account health and attainment dashboards.</li>
+          <li>Flag risks early; capture expansion signals.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">Activity Attribution Engine</div><div class="d">Matches meetings to active <b>Targets</b> and credits “Meetings Booked / Held” KPIs.</div></div>
+        <div class="auto"><div class="n">Target Scorecard Status Engine <span class="tag apex">Apex roll-up</span></div><div class="d">Recalculates attainment vs target and sets a RAG performance status per target.</div></div>
+        <div class="auto"><div class="n">Scorecard Quota Sync Engine</div><div class="d">Keeps quota figures aligned across targets and scorecards.</div></div>
+        <div class="auto"><div class="n">Recalculate Sales Velocity Benchmarks <span class="tag sched">nightly</span></div><div class="d">Refreshes win-rate &amp; cycle-time benchmarks so “healthy” is always measured against current reality.</div></div>
+        <div class="auto"><div class="n">Event — Meeting Enrichment &amp; Data Quality</div><div class="d">Defaults and validates meeting fields (type, sentiment, outcome) so engagement data stays clean.</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">📈</span>How impact is measured</div>
+        <div class="scorecards">
+          <div class="score blue"><div class="k">Meetings</div><div class="v">Held</div><div class="s">Attributed to target</div></div>
+          <div class="score a"><div class="k">Attainment</div><div class="v">RAG</div><div class="s">vs quota target</div></div>
+          <div class="score cyan"><div class="k">Velocity</div><div class="v">Auto</div><div class="s">benchmarked nightly</div></div>
+        </div>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:0">Every logged meeting becomes a
+          <b>Target Attribution</b> record — the same engine that credits acquisition now measures
+          customer engagement, giving CS and leadership one consistent health signal.</p>
+      </div>
+      <div class="callout tip">💡 <b>Tip:</b> Because attribution is bulk-safe, you can log a whole quarter
+        of QBRs at once and the scorecards still recalculate correctly.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 GROW -->
+<section class="stage" id="grow">
+  <div class="stage-head">
+    <div class="stage-num" style="background:linear-gradient(135deg,#15bdf0,#0bd0ff)">7</div>
+    <div>
+      <span class="badge-side badge-ret">Retention &amp; Growth</span>
+      <h2 style="margin-top:6px">Grow</h2>
+    </div>
+  </div>
+  <p class="purpose">Expand and renew. The renewal the system seeded at the win is waiting for you, and
+    expansion deals link back so revenue is never double-counted.</p>
+  <div class="cols">
+    <div>
+      <div class="card">
+        <div class="lbl you"><span class="dot">👤</span>What you do</div>
+        <ul class="clean">
+          <li>Work the <b>auto-created Renewal</b> opportunity ahead of term.</li>
+          <li>Raise <b>expansion</b> deals via the same New Opportunity button.</li>
+          <li>Run the renewal QBR; present expansion modules.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="lbl sys"><span class="dot">⚙️</span>What the system does for you</div>
+        <div class="auto"><div class="n">Create Renewal on Close Won</div><div class="d">The renewal opp already exists — pre-dated to next term, ready to forecast.</div></div>
+        <div class="auto"><div class="n">Link Expansion to Renewal</div><div class="d">Ties expansion deals to the renewal so the account’s forward revenue stays coherent.</div></div>
+        <div class="auto"><div class="n">Update Renewal ARR on Expansion Close</div><div class="d">When an expansion closes, the renewal’s ARR updates so the renewal reflects the larger footprint.</div></div>
+        <div class="auto"><div class="n">Renewal Duplicate Guard</div><div class="d">Prevents two renewals being created for the same term.</div></div>
+      </div>
+    </div>
+    <div>
+      <figure>
+        <div class="shot" data-zoom="assets/07-renewal.png"><img src="assets/07-renewal.png" alt="Renewal opportunity"></div>
+        <figcaption>“Northwind Logistics – Renewal – FY27” at £132k — queued and ready, with a renewal-QBR next step.</figcaption>
+      </figure>
+      <div class="callout">🔎 <b>Look for:</b> the Renewal opp’s <b>Deal Type = Renewal</b> and a close date a
+        full term out — your future pipeline, generated the day you won.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- REFERENCE TABLE -->
+<section class="ref" id="reference">
+  <div class="wrap">
+    <h2 style="font-size:26px;font-weight:800;margin-bottom:6px">Automation reference — by stage</h2>
+    <p style="color:var(--muted);margin:0 0 18px">A quick index of the automations behind each stage. All run
+      automatically; none require you to launch them.</p>
+    <table>
+      <thead><tr><th style="width:130px">Stage</th><th>Automations working for you</th></tr></thead>
+      <tbody>
+        <tr><td><span class="stagetag badge-acq">1 Awareness</span></td><td>Set Default Lifecycle Stage · Lifecycle Create &amp; Link · Firmographic Banding · Scorecard Auto-Assignment · Lead Attribution Engine · Foundation Governance · Root-Domain Populate</td></tr>
+        <tr><td><span class="stagetag badge-acq">2 Education</span></td><td>ICP Firmographic/Technographic/Persona/Composite/Scorecard Grades · BANT Score · Lifecycle Stage Engine · SLA Start &amp; Missed · Lifecycle Sync · Nightly Behavioural &amp; Grade Recalcs</td></tr>
+        <tr><td><span class="stagetag badge-acq">3 Selection</span></td><td>BDR→AE Hand-off · New Opportunity Intake · Conversion Data Stamping · Lead Conversion Sync · Opportunity Name Stamp · MEDDPICC &amp; BANT Score · BANT Carry-Over · Pipeline Entry &amp; Stage Velocity Stamp · Contact Role Sync · Event Meeting Enrichment / Data Quality / First-Meeting Stamp</td></tr>
+        <tr><td><span class="stagetag badge-acq">4 Commit</span></td><td>Stage Change Governance · Deal Amount Validation · Populate ARR · Weighted Forecast · Forecast Submission &amp; Nightly Rollup · Close-Won Velocity Freeze · Sales Commission Calculator · Deal Approval (Apex) · Fallout Tracking · Stage Regression Counter · Next-Step Pipeline Hygiene</td></tr>
+        <tr><td><span class="stagetag badge-ret">5 Onboard</span></td><td>Create Renewal on Close Won · Account Deal Summary Roll-up (Apex) · Target Account Record Management · Target Account Summary Sync</td></tr>
+        <tr><td><span class="stagetag badge-ret">6 Impact</span></td><td>Activity Attribution Engine · Target Scorecard Status Engine (Apex) · Scorecard Quota Sync · Recalculate Velocity Benchmarks (nightly) · Meeting Enrichment &amp; Data Quality</td></tr>
+        <tr><td><span class="stagetag badge-ret">7 Grow</span></td><td>Create Renewal on Close Won · Link Expansion to Renewal · Update Renewal ARR on Expansion Close · Renewal Duplicate Guard · New Opportunity Intake (expansion)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Xypher RevOps — End-User Guide.</b> Built by SaaScend. Journey data is a live demo record
+      (<i>Northwind Logistics / Dana Whitfield</i>) in the Xypher sandbox.</p>
+    <p style="color:#8fb0d0">Automations fire on save, on record change, or on schedule — you never trigger
+      them manually. Questions? Ask your RevOps admin.</p>
+  </div>
+</footer>
+
+<div class="lb" id="lb"><img src="" alt="enlarged screenshot" id="lbimg"></div>
+
+<script>
+  // smooth-scroll for all data-go buttons / polygons
+  document.querySelectorAll('[data-go]').forEach(el=>{
+    el.style.cursor='pointer';
+    el.addEventListener('click',()=>{
+      const t=document.getElementById(el.getAttribute('data-go'));
+      if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  // scrollspy -> highlight active stage label + ticker
+  const ids=['awareness','education','selection','commit','onboard','impact','grow'];
+  const labelBtns=[...document.querySelectorAll('#stageLabels button')];
+  const tickBtns=[...document.querySelectorAll('#ticker button')];
+  const ticker=document.getElementById('ticker');
+  function setActive(id){
+    labelBtns.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
+    tickBtns.forEach(b=>b.classList.toggle('active',b.dataset.go===id));
+  }
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
+  },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+  ids.forEach(id=>{const el=document.getElementById(id); if(el) obs.observe(el);});
+
+  // show ticker after hero scrolled past
+  window.addEventListener('scroll',()=>{
+    ticker.style.display = window.scrollY>520 ? 'block':'none';
+  });
+
+  // lightbox
+  const lb=document.getElementById('lb'), lbimg=document.getElementById('lbimg');
+  document.querySelectorAll('[data-zoom]').forEach(el=>{
+    el.addEventListener('click',()=>{ lbimg.src=el.getAttribute('data-zoom'); lb.classList.add('open'); });
+  });
+  lb.addEventListener('click',()=>lb.classList.remove('open'));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') lb.classList.remove('open'); });
+</script>
+</body>
+</html>
