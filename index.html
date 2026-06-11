@@ -290,9 +290,9 @@
     <div class="spacer"></div>
     <div class="lens" id="lens" title="Filter the guide to a role">
       <button data-role="all" class="on">All</button>
-      <button data-role="SDR">SDR</button>
       <button data-role="AE">AE</button>
-      <button data-role="CSM">CSM</button>
+      <button data-role="SalesLeadership">Sales Ldr</button>
+      <button data-role="Executives">Exec</button>
     </div>
     <button class="icbtn" id="palBtn" title="Search (press /)">⌕</button>
     <button class="icbtn" id="themeBtn" title="Toggle dark mode">🌙</button>
@@ -312,7 +312,7 @@
       system does for you — mapped to the journey a customer travels, from first touch to renewal.
       Follow one real deal through all seven stages of the bowtie.</p>
     <div class="meta">
-      <span class="pill">For&nbsp;<b>Sellers, SDRs &amp; CSMs</b></span>
+      <span class="pill">For&nbsp;<b>AEs, Sales Leadership &amp; Execs</b></span>
       <span class="pill">Org&nbsp;<b>Xypher (Sandbox)</b></span>
       <span class="pill"><b>84</b>&nbsp;live automations</span>
       <span class="pill">Press&nbsp;<b>/</b>&nbsp;to search</span>
@@ -347,9 +347,9 @@
         <h3>👋 First, who are you?</h3>
         <p>Pick your role to get a day-one checklist and focus the guide on the stages you own.</p>
       </div>
-      <button data-p="SDR">I'm an SDR</button>
       <button data-p="AE">I'm an AE</button>
-      <button data-p="CSM">I'm a CSM</button>
+      <button data-p="SalesLeadership">I'm in Sales Leadership</button>
+      <button data-p="Executives">I'm an Executive</button>
       <button data-p="all">Just show me everything</button>
     </div>
     <div class="panel checklist hidden" id="checklistBox" style="margin-top:14px"></div>
@@ -535,7 +535,7 @@ const GLOSSARY=[
 ];
 
 const STAGES=[
- {id:"awareness",num:1,side:"acq",roles:["SDR"],name:"Awareness",color:["#0a1f3c","#1a3f70"],
+ {id:"awareness",num:1,side:"acq",roles:["SalesLeadership"],name:"Awareness",color:["#0a1f3c","#1a3f70"],
   purpose:"A new lead enters your world. Your only job is to capture who they are — the system immediately starts a tracked <span class='gl-term'>Lifecycle</span> and credits the source.",
   you:["Create or own a new lead — web form, event list, or manual entry.","Fill the essentials: <b>name, company, title, lead source</b>.","That's it — no manual staging or scoring."],
   system:[{n:"Set Default Lifecycle Stage",d:"Stamps the lead at <b>“1 – Inquiry”</b> automatically."},
@@ -551,7 +551,7 @@ const STAGES=[
   shot:{src:"01-lead.png",cap:"Dana Whitfield enters as a Webinar lead — firmographics captured, lifecycle started.",o:"Lead",id:"00QPt00000OOX8tMAH"},
   quiz:{q:"What sets the lead's lifecycle stage to “1 – Inquiry”?",opts:["You type it in","The Set Default Lifecycle Stage flow","Your manager"],a:1,explain:"A before-save flow stamps it the moment the lead is created — you never set it by hand."}},
 
- {id:"education",num:2,side:"acq",roles:["SDR"],name:"Education",color:["#13315c","#1e5391"],
+ {id:"education",num:2,side:"acq",roles:["SalesLeadership"],name:"Education",color:["#13315c","#1e5391"],
   purpose:"The lead is nurtured and continuously scored. The system tells you how good a fit (<span class='gl-term'>ICP</span>) and how engaged (<span class='gl-term'>BANT</span>) — so you spend time on the right people.",
   you:["Log activities, calls and emails as you nurture.","Read the <span class='gl-term'>ICP</span> Grade and <span class='gl-term'>BANT</span> Score to prioritise.","Advance the lead to <span class='gl-term'>MQL</span> when marketing-qualified."],
   system:[{n:"ICP Firmographic / Persona / Technographic Grade",d:"Grades fit A–D across each dimension."},
@@ -570,7 +570,7 @@ const STAGES=[
     <div class="score cyan"><div class="k">Lifecycle</div><div class="v">MQL</div><div class="s">SLA running</div></div></div></div>`,
   quiz:{q:"You set all four BANT flags. What BANT score does the system compute?",opts:["50","100","It stays 0 until a manager approves"],a:1,explain:"Budget 30 + Authority 30 + Need 25 + Timeline 15 = 100 → “Fully Qualified”."}},
 
- {id:"selection",num:3,side:"acq",roles:["SDR","AE"],name:"Selection",color:["#1b4b85","#2569ad"],
+ {id:"selection",num:3,side:"acq",roles:["AE","SalesLeadership"],name:"Selection",color:["#1b4b85","#2569ad"],
   purpose:"Sales accepts the hand-off and qualifies the deal. The lead converts to an Opportunity and the system carries every scrap of context across so nothing is re-typed.",
   you:["Accept the <span class='gl-term'>SQL</span> hand-off and convert the lead.","Use the <b>“New Opportunity”</b> guided button.","Run discovery; fill <span class='gl-term'>MEDDPICC</span> and set the Next Step."],
   system:[{n:"BDR → AE Hand-off Notification",tag:["sched","async"],d:"Emails the AE on SQL and sets an acceptance-due date."},
@@ -597,7 +597,7 @@ const STAGES=[
     <div class="md"><div class="t">Competition</div><div class="st p">In Progress</div></div></div></div>`,
   quiz:{q:"Who creates the Opportunity's structured name?",opts:["You type it","The Name Stamp flow, from the deal's fields","It's left blank"],a:1,explain:"The Name Stamp flow assembles Account – Type – Product – Region – Quarter automatically."}},
 
- {id:"commit",num:4,side:"acq",roles:["AE"],name:"Commit",color:["#1593cf","#13c6f7"],
+ {id:"commit",num:4,side:"acq",roles:["AE","SalesLeadership","Executives"],name:"Commit",color:["#1593cf","#13c6f7"],
   purpose:"The decisive stage of the bowtie. You drive the deal to close — the system handles commercial maths, governance, forecasting and commission so the win is clean and auditable.",
   you:["Advance through <b>Negotiation → Commit</b>, keeping Next Steps current.","Confirm the commercials (Recurring Revenue, term).","Close the deal <b>Won</b> — and pick a <b>Closed Reason</b>."],
   system:[{n:"Stage Change Governance",d:"Blocks stage advance until that stage's required fields are complete."},
@@ -618,7 +618,7 @@ const STAGES=[
    <div class="score cyan"><div class="k">Account roll-up</div><div class="v">+1</div><div class="s">Won deal counted</div></div></div></div>`,
   quiz:{q:"What must you set before a deal can be saved as Closed Won?",opts:["Nothing — it just closes","A Closed Reason","The commission amount"],a:1,explain:"A validation rule requires a Closed Reason; the commission is then calculated for you."}},
 
- {id:"onboard",num:5,side:"ret",roles:["AE","CSM"],name:"Onboard",color:["#13a3df","#16b9ec"],
+ {id:"onboard",num:5,side:"ret",roles:["AE"],name:"Onboard",color:["#13a3df","#16b9ec"],
   purpose:"The prospect is now a customer. The system rolls the win up to the account and seeds the renewal, so the relationship starts on a clean, measurable footing.",
   you:["Hand off to delivery / Customer Success.","Run the onboarding kickoff (your Next Step is set from the win).","Confirm the account reads cleanly for the CS team."],
   system:[{n:"Create Renewal on Close Won",d:"Generates the next-term <b>Renewal</b> opportunity automatically."},
@@ -630,9 +630,9 @@ const STAGES=[
   shot:{src:"05-account.png",cap:"The Northwind account — Dana linked, roll-ups now populated.",o:"Account",id:"001Pt00000e9WhhIAE"},
   quiz:{q:"Where does the renewal opportunity come from?",opts:["You create it manually","Auto-created the moment the deal is Closed Won","CS creates it later"],a:1,explain:"The Create-Renewal flow fires on Closed Won and pre-dates the renewal a full term out."}},
 
- {id:"impact",num:6,side:"ret",roles:["CSM"],name:"Impact",color:["#13b0e6","#13c6f7"],
+ {id:"impact",num:6,side:"ret",roles:["SalesLeadership","Executives"],name:"Impact",color:["#13b0e6","#13c6f7"],
   purpose:"The customer realises value. The system measures engagement and attainment against targets, turning every meeting into a tracked, attributed signal of health.",
-  you:["Run QBRs and value reviews; log meetings & outcomes.","Watch account-health and attainment dashboards.","Flag risks early; capture expansion signals."],
+  you:["Review attainment, win-ratio and pipeline-coverage on the dashboards.","Inspect stalled deals, SLA breaches and stage velocity across the team.","Ensure meetings &amp; outcomes are logged so health data stays clean."],
   system:[{n:"Activity Attribution Engine",d:"Matches meetings to active Targets and credits Meetings-Booked/Held KPIs."},
           {n:"Target Scorecard Status Engine",tag:["apex","Apex"],d:"Recalculates attainment vs target and sets a RAG status."},
           {n:"Recalculate Velocity Benchmarks",tag:["sched","nightly"],d:"Refreshes win-rate & cycle-time benchmarks."},
@@ -641,10 +641,10 @@ const STAGES=[
           ["Attribution","sys","Each meeting becomes a Target Attribution record."],
           ["Target attainment","sys","RAG status vs quota."]],
   mistakes:["Logging a meeting without a <b>type/outcome</b> — it gets flagged as incomplete.","Ignoring a target sliding to <b>Red</b> attainment."],
-  shot:{src:"nav-dashboard.png",cap:"Pipeline & attainment, visualised — the reporting layer the automations feed.",o:"Dashboard",id:"01ZPt00000Bj8jAMAR"},
+  shot:{src:"exec-dashboard.png",cap:"The Executive Dashboard — quota vs bookings, win ratio, pipeline coverage and forecast, all fed by the automations.",o:"Dashboard",id:"01ZPt00000Bj8j4MAB"},
   quiz:{q:"What turns a logged meeting into a tracked KPI?",opts:["Nothing, meetings aren't tracked","The Activity Attribution Engine","You email your manager"],a:1,explain:"It matches the meeting to active Targets and credits the Meetings-Held KPI automatically."}},
 
- {id:"grow",num:7,side:"ret",roles:["CSM","AE"],name:"Grow",color:["#15bdf0","#0bd0ff"],
+ {id:"grow",num:7,side:"ret",roles:["AE","Executives"],name:"Grow",color:["#15bdf0","#0bd0ff"],
   purpose:"Expand and renew. The renewal the system seeded at the win is waiting; expansion deals link back so revenue is never double-counted.",
   you:["Work the <b>auto-created Renewal</b> ahead of term.","Raise <b>expansion</b> deals via the New Opportunity button.","Run the renewal QBR; present expansion modules."],
   system:[{n:"Create Renewal on Close Won",d:"The renewal opp already exists — pre-dated and ready to forecast."},
@@ -667,12 +667,13 @@ const FAQ=[
  ["Where do I find all my deals?","The <b>Opportunities</b> tab → pick a list view like “My Open Opportunities”. Use global search for a specific record."]
 ];
 
+const ROLE_LABELS={AE:"AE",SalesLeadership:"Sales Leadership",Executives:"Executive"};
 const CHECKLISTS={
- SDR:["Open the Leads tab and find a Webinar lead","Read its ICP Grade & BANT Score","Log an activity, then advance it to MQL","When it's SQL, convert it with the New Opportunity button"],
- AE:["Open your live opportunity and review the deal-health cards","Complete the MEDDPICC dimensions","Set a Next Step + due date","Advance the stage and close Won with a Closed Reason"],
- CSM:["Open a won customer Account and read the roll-ups","Find the auto-created Renewal opportunity","Log a QBR meeting with a type & outcome","Raise an expansion deal and link it to the renewal"]
+ AE:["Open your live opportunity and review the deal-health cards","Complete the MEDDPICC dimensions","Set a Next Step + due date","Advance the stage and close Won with a Closed Reason","Work the auto-created renewal ahead of term"],
+ SalesLeadership:["Open the Executive / Pipeline dashboard and review coverage","Check the forecast roll-up for the current period","Inspect your team's MEDDPICC scores & open next steps","Review SLA breaches and stage-velocity on stalled deals"],
+ Executives:["Open the Executive Dashboard","Review quota vs bookings and win ratio","Check pipeline coverage and forecast by category","Review the renewal & expansion pipeline for retention"]
 };
-const ROLE_STAGES={SDR:["awareness","education","selection"],AE:["selection","commit","onboard"],CSM:["onboard","impact","grow"]};
+const ROLE_STAGES={AE:["selection","commit","onboard","grow"],SalesLeadership:["awareness","education","selection","commit","impact"],Executives:["commit","impact","grow"]};
 
 const TOUR=[
  ["Click “New Opportunity”","On any Account, hit the <b>New Opportunity</b> button. A guided screen opens — no blank record to figure out."],
@@ -703,7 +704,7 @@ $("#stages").innerHTML=STAGES.map(s=>{
   <div class="stage-head">
     <div class="stage-num" style="background:linear-gradient(135deg,${s.color[0]},${s.color[1]})">${s.num}</div>
     <div><span class="badge-side ${sideCls(s.side)}">${s.side==="acq"?"Acquisition":"Retention & Growth"}</span>
-      ${s.roles.map(r=>`<span class="rolechip">${r}</span>`).join(" ")}
+      ${s.roles.map(r=>`<span class="rolechip">${ROLE_LABELS[r]||r}</span>`).join(" ")}
       <h2 style="margin-top:6px">${s.name}</h2></div>
     <button class="markdone" data-done="${s.id}">○ Mark complete</button>
   </div>
