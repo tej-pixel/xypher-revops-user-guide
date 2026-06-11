@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Xypher RevOps — End-User Guide</title>
+<link rel="icon" type="image/png" href="assets/xypher-favicon.png">
+<link rel="apple-touch-icon" href="assets/xypher-favicon.png">
 <style>
   :root{
     --navy:#0a1f3c; --navy2:#16386b; --pivot:#18a0e0; --ret1:#1aa3df; --ret2:#13c0f5;
@@ -32,8 +34,13 @@
   /* top nav */
   nav.top{position:sticky;top:0;z-index:60;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 6px rgba(16,42,76,.05)}
   nav.top .wrap{display:flex;align-items:center;gap:14px;height:56px}
-  nav.top .brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap}
-  nav.top .brand span{color:var(--pivot)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;white-space:nowrap;text-decoration:none}
+  nav.top .brand img{height:23px;width:auto;display:block}
+  nav.top .brand .logo-w{display:none}
+  [data-theme="dark"] nav.top .brand .logo-c{display:none}
+  [data-theme="dark"] nav.top .brand .logo-w{display:block}
+  nav.top .brand .brandsub{font-weight:800;font-size:14px;color:var(--ink);border-left:1px solid var(--line);padding-left:10px}
+  .hero-logo{height:48px;width:auto;display:block;margin-bottom:20px}
   nav.top .spacer{flex:1}
   nav.top .lens{display:flex;gap:2px;background:var(--chip);border-radius:9px;padding:3px}
   nav.top .lens button{border:0;background:none;font-size:12px;font-weight:700;color:var(--muted);padding:5px 9px;border-radius:7px;cursor:pointer}
@@ -280,7 +287,11 @@
 
 <nav class="top">
   <div class="wrap">
-    <div class="brand">Xypher <span>RevOps</span> Guide</div>
+    <a class="brand" href="#top" aria-label="Xypher RevOps Guide">
+      <img class="logo-c" src="assets/xypher-logo-colour.svg" alt="Xypher">
+      <img class="logo-w" src="assets/xypher-logo-white.svg" alt="Xypher">
+      <span class="brandsub">RevOps Guide</span>
+    </a>
     <div class="links">
       <a href="#start">Start here</a>
       <a href="#firsttask">First task</a>
@@ -306,7 +317,8 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow">Xypher · RevOps Operating System</div>
+    <img src="assets/xypher-logo-white.svg" alt="Xypher" class="hero-logo">
+    <div class="eyebrow">RevOps Operating System</div>
     <h1>The End-User Guide to Your Revenue Engine</h1>
     <p class="lead">New to Salesforce? Start here. Learn the screen, the jargon, and exactly what the
       system does for you — mapped to the journey a customer travels, from first touch to renewal.
