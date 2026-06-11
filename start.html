@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Start Here · Xypher RevOps Guide</title>
+<link rel="icon" type="image/png" href="assets/xypher-favicon.png">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div id="scrollbar"></div>
+<nav class="top"><div class="wrap">
+  <a class="brand" href="index.html" aria-label="Xypher RevOps Guide">
+    <img class="logo-c" src="assets/xypher-logo-colour.svg" alt="Xypher">
+    <img class="logo-w" src="assets/xypher-logo-white.svg" alt="Xypher">
+    <span class="brandsub">RevOps Guide</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="start.html" class="on">Start here</a>
+    <a href="journey.html">Journey</a>
+    <a href="capabilities.html">Capabilities</a>
+    <a href="reference.html">Reference</a>
+  </div>
+  <div class="spacer"></div>
+  <div class="lens" id="lens" title="Filter the guide to a role">
+    <button data-role="all" class="on">All</button>
+    <button data-role="AE">AE</button>
+    <button data-role="SalesLeadership">Sales Ldr</button>
+    <button data-role="Executives">Exec</button>
+  </div>
+  <button class="icbtn" id="palBtn" title="Search (press /)">⌕</button>
+  <button class="icbtn" id="themeBtn" title="Toggle dark mode">🌙</button>
+  <div class="ring" title="Journey progress">
+    <svg width="34" height="34"><circle cx="17" cy="17" r="14" fill="none" stroke="var(--line)" stroke-width="4"/>
+    <circle id="ringfill" cx="17" cy="17" r="14" fill="none" stroke="var(--pivot)" stroke-width="4" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="88"/></svg>
+    <div class="pct" id="ringpct">0</div></div>
+</div></nav>
+
+<div class="wrap">
+  <section id="start" class="sec-head">
+    <div class="kicker">Salesforce in 5 minutes</div>
+    <h2>Start here — get your bearings</h2>
+    <p>Before the journey, three things every first-time user needs: how to read a record, how to get
+      around, and what the acronyms mean. Then create your first opportunity and try the live simulator.</p>
+  </section>
+
+  <section style="padding-top:6px">
+    <h3 style="font-size:18px;margin-bottom:4px">① Anatomy of a record page</h3>
+    <p style="color:var(--muted);font-size:14.5px;margin:0 0 14px">Click each numbered marker to learn what it is.</p>
+    <div class="cols2">
+      <figure>
+        <div class="shot anat" id="anat" style="cursor:default">
+          <img src="assets/03-opp-live.png" alt="Opportunity record page">
+        </div>
+      </figure>
+      <div>
+        <div class="anat-info" id="anatInfo"><b>Tip:</b> tap a blue number on the screenshot to learn that part of the page.</div>
+        <a class="openorg" target="_blank" href="https://xypher--saascend.sandbox.lightning.force.com/lightning/r/Opportunity/006Pt00002D2rR9IAJ/view">Open this record in Salesforce ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:34px">
+    <h3 style="font-size:18px;margin-bottom:4px">② Getting around</h3>
+    <p style="color:var(--muted);font-size:14.5px;margin:0 0 14px">Three things you'll use constantly.</p>
+    <div class="cols2">
+      <figure>
+        <div class="shot" data-zoom="assets/nav-listview.png"><img src="assets/nav-listview.png" alt="List view"></div>
+        <figcaption><b>List views</b> — every object tab (Opportunities, Leads…) opens a filterable list of your records. Switch the view (e.g. “My Open Opportunities”), sort columns, search within the list.</figcaption>
+        <a class="openorg" target="_blank" href="https://xypher--saascend.sandbox.lightning.force.com/lightning/o/Opportunity/list">Open Opportunities list ↗</a>
+      </figure>
+      <figure>
+        <div class="shot" data-zoom="assets/exec-dashboard.png"><img src="assets/exec-dashboard.png" alt="Executive Dashboard"></div>
+        <figcaption><b>Dashboards &amp; reports</b> — the Dashboards tab shows live charts (quota, win ratio, pipeline coverage, forecast). These are read-only views built on reports — your data, visualised.</figcaption>
+        <a class="openorg" target="_blank" href="https://xypher--saascend.sandbox.lightning.force.com/lightning/r/Dashboard/01ZPt00000Bj8j4MAB/view">Open this dashboard ↗</a>
+      </figure>
+    </div>
+    <div class="callout tip" style="margin-top:16px">🔎 <b>The global search bar</b> (top of every page) finds any record by name. The <b>nav bar</b> beneath it switches objects. The <b>app launcher</b> (▦, top-left) jumps between apps.</div>
+  </section>
+
+  <section id="glossary" style="padding-top:34px">
+    <h3 style="font-size:18px;margin-bottom:4px">③ Decode the jargon</h3>
+    <p style="color:var(--muted);font-size:14.5px;margin:0 0 14px">Hover any <span class="gl-term">dotted term</span> anywhere in this guide for a definition, or browse them all:</p>
+    <div class="glossary-grid" id="glossaryGrid"></div>
+  </section>
+
+  <section id="firsttask" class="sec-head">
+    <div class="kicker">Your first task</div>
+    <h2>Create your first opportunity</h2>
+    <p>The guided “New Opportunity” button does the heavy lifting. Step through it:</p>
+  </section>
+  <section style="padding-top:6px">
+    <div class="panel tour">
+      <figure>
+        <div class="shot" data-zoom="assets/new-opp-flow.png"><img src="assets/new-opp-flow.png" alt="New Opportunity guided flow"></div>
+        <figcaption>The guided New Opportunity screen, launched from the button on any Account.</figcaption>
+      </figure>
+      <div>
+        <div class="steps" id="tourSteps"></div>
+        <div class="nav">
+          <button id="tourPrev">‹ Back</button>
+          <button id="tourNext" class="primary">Next ›</button>
+          <div class="dots" id="tourDots"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:34px">
+    <h3 style="font-size:18px;margin-bottom:4px">Watch the automation work</h3>
+    <p style="color:var(--muted);font-size:14.5px;margin:0 0 14px">Same record, before and after you hit Save. The system fills the grey fields for you.</p>
+    <div class="ba-toggle" id="baToggle">
+      <button data-ba="before" class="on">Before save</button>
+      <button data-ba="after">After save ⚡</button>
+    </div>
+    <div class="mockrec" id="mockrec" style="max-width:560px"></div>
+  </section>
+
+  <section id="sim" class="sec-head">
+    <div class="kicker">Try it yourself</div>
+    <h2>Live scoring simulator</h2>
+    <p>The system scores every lead and deal automatically. Play with the inputs and watch the score move — no data is changed in Salesforce.</p>
+  </section>
+  <section style="padding-top:6px">
+    <div class="cols2">
+      <div class="panel">
+        <h3 style="font-size:16px;margin-bottom:6px">BANT qualification</h3>
+        <div class="sim" style="grid-template-columns:1fr">
+          <div>
+            <label class="opt"><input type="checkbox" class="bant" data-w="30"> Budget confirmed <span class="w">30 pts</span></label>
+            <label class="opt"><input type="checkbox" class="bant" data-w="30"> Authority confirmed <span class="w">30 pts</span></label>
+            <label class="opt"><input type="checkbox" class="bant" data-w="25"> Need confirmed <span class="w">25 pts</span></label>
+            <label class="opt"><input type="checkbox" class="bant" data-w="15"> Timeline confirmed <span class="w">15 pts</span></label>
+          </div>
+          <div class="gauge">
+            <div class="num" id="bantNum" style="color:var(--accent)">0</div>
+            <div class="lab" id="bantLab" style="color:var(--muted)">Unqualified</div>
+            <div class="bar"><i id="bantBar" style="background:var(--accent)"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 style="font-size:16px;margin-bottom:6px">MEDDPICC health</h3>
+        <div class="gauge">
+          <div class="num" id="medNum">0</div>
+          <div class="lab" id="medLab">🔴 Red</div>
+          <div class="bar"><i id="medBar"></i></div>
+        </div>
+        <div id="medOpts" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-head" style="text-align:center"><p style="margin:0 auto"><a href="journey.html" style="font-weight:700">Ready? Walk the seven stages of the bowtie →</a></p></section>
+</div>
+
+<footer><div class="wrap">
+  <p><b>Xypher RevOps — End-User Guide.</b> Built by SaaScend. The journey is a live demo record
+    (<i>Northwind Logistics / Dana Whitfield</i>) in the Xypher sandbox.</p>
+  <p style="color:#8fb0d0">Automations fire on save, on record change, or on schedule — you never trigger them manually.</p>
+  <div class="feedback"><span>Was this helpful?</span><button data-fb="yes">👍 Yes</button><button data-fb="no">👎 Needs work</button></div>
+</div></footer>
+
+<div class="lb" id="lb"><img src="" alt="" id="lbimg"></div>
+<div class="pal" id="pal"><div class="box"><input id="palInput" placeholder="Jump to a page, stage, pillar or term…"><div class="res" id="palRes"></div></div></div>
+<div id="bowtip"></div>
+<div class="toast" id="toast"></div>
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

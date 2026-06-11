@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Journey · Xypher RevOps Guide</title>
+<link rel="icon" type="image/png" href="assets/xypher-favicon.png">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<div id="scrollbar"></div>
+<nav class="top"><div class="wrap">
+  <a class="brand" href="index.html" aria-label="Xypher RevOps Guide">
+    <img class="logo-c" src="assets/xypher-logo-colour.svg" alt="Xypher">
+    <img class="logo-w" src="assets/xypher-logo-white.svg" alt="Xypher">
+    <span class="brandsub">RevOps Guide</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="start.html">Start here</a>
+    <a href="journey.html" class="on">Journey</a>
+    <a href="capabilities.html">Capabilities</a>
+    <a href="reference.html">Reference</a>
+  </div>
+  <div class="spacer"></div>
+  <div class="lens" id="lens" title="Filter the journey to a role">
+    <button data-role="all" class="on">All</button>
+    <button data-role="AE">AE</button>
+    <button data-role="SalesLeadership">Sales Ldr</button>
+    <button data-role="Executives">Exec</button>
+  </div>
+  <button class="icbtn" id="palBtn" title="Search (press /)">⌕</button>
+  <button class="icbtn" id="themeBtn" title="Toggle dark mode">🌙</button>
+  <div class="ring" title="Journey progress">
+    <svg width="34" height="34"><circle cx="17" cy="17" r="14" fill="none" stroke="var(--line)" stroke-width="4"/>
+    <circle id="ringfill" cx="17" cy="17" r="14" fill="none" stroke="var(--pivot)" stroke-width="4" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="88"/></svg>
+    <div class="pct" id="ringpct">0</div></div>
+</div></nav>
+
+<div class="wrap">
+  <section class="sec-head"><div class="kicker">The journey</div><h2>The seven stages of the bowtie</h2>
+    <p>Each stage: what you do, what fires automatically, the fields that matter, and the mistakes to avoid.
+      Use the role filter to focus on your stages, and test yourself at the end of each.</p></section>
+  <div class="jpills" id="jpills"></div>
+  <div id="stages"></div>
+  <section class="sec-head" style="text-align:center"><p style="margin:0 auto"><a href="capabilities.html" style="font-weight:700">See the six capabilities that power these stages →</a></p></section>
+</div>
+
+<footer><div class="wrap">
+  <p><b>Xypher RevOps — End-User Guide.</b> Built by SaaScend. The journey is a live demo record
+    (<i>Northwind Logistics / Dana Whitfield</i>) in the Xypher sandbox.</p>
+  <p style="color:#8fb0d0">Automations fire on save, on record change, or on schedule — you never trigger them manually.</p>
+  <div class="feedback"><span>Was this helpful?</span><button data-fb="yes">👍 Yes</button><button data-fb="no">👎 Needs work</button></div>
+</div></footer>
+
+<div class="lb" id="lb"><img src="" alt="" id="lbimg"></div>
+<div class="pal" id="pal"><div class="box"><input id="palInput" placeholder="Jump to a page, stage, pillar or term…"><div class="res" id="palRes"></div></div></div>
+<div id="bowtip"></div>
+<div class="toast" id="toast"></div>
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>
