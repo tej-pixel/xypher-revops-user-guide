@@ -11,7 +11,7 @@
     --navy:#0a1f3c; --navy2:#16386b; --pivot:#18a0e0; --ret1:#1aa3df; --ret2:#13c0f5;
     --ink:#172534; --muted:#5d6f80; --line:#e4eaf1; --bg:#f5f8fc; --card:#ffffff;
     --accent:#1c74c4; --good:#1e9e62; --good-bg:#e7f6ee; --warn:#c9821a; --warn-bg:#fbf1df;
-    --bad:#c0392b; --bad-bg:#fbe9e6; --chip:#eef4fb; --shadow:0 1px 3px rgba(16,42,76,.08),0 8px 28px rgba(16,42,76,.07);
+    --bad:#c0392b; --bad-bg:#fbe9e6; --chip:#eef4fb; --pillar:#16c79a; --shadow:0 1px 3px rgba(16,42,76,.08),0 8px 28px rgba(16,42,76,.07);
     --radius:14px;
   }
   [data-theme="dark"]{
@@ -261,6 +261,26 @@
   .stagetag{font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;white-space:nowrap}
   #autosearch{width:100%;max-width:360px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:14px;margin-bottom:14px}
 
+  /* capability pillars */
+  .pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:900px){.pillars-grid{grid-template-columns:1fr}}
+  .pillar{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 22px 20px;display:flex;flex-direction:column}
+  .pillar .ptop{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+  .pnum{flex:0 0 46px;height:46px;border-radius:50%;background:var(--navy);color:var(--pillar);display:grid;place-items:center;font-weight:800;font-size:16px;letter-spacing:.02em}
+  [data-theme="dark"] .pnum{background:#0a1726;border:1px solid var(--line)}
+  .pillar h4{font-size:18px;font-weight:800;line-height:1.15}
+  .pillar .blurb{color:var(--muted);font-size:14px;margin:0 0 14px}
+  .pillar .howlbl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pillar);margin-bottom:6px}
+  .pillar .how{font-size:13.5px;color:var(--ink);line-height:1.55}
+  .pillar .pstages{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;padding-top:13px;border-top:1px dashed var(--line)}
+  .pchip{font-size:11px;font-weight:700;background:var(--chip);color:var(--accent);border:0;padding:5px 10px;border-radius:999px;cursor:pointer}
+  .pchip:hover{background:var(--accent);color:#fff}
+  /* per-stage capability chips */
+  .capchips{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:-6px 0 18px}
+  .capchips .lbl{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .capchip{font-size:11px;font-weight:700;background:var(--card);border:1px solid var(--line);color:var(--ink);padding:5px 10px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .capchip:hover{border-color:var(--pillar)}
+  .capchip b{color:var(--pillar)}
   footer{background:#0c2342;color:#b9cde2;padding:34px 0;font-size:14px;margin-top:20px}
   footer b{color:#fff}footer a{color:#79b6ec}
   .feedback{display:flex;gap:10px;align-items:center;margin-top:14px}
@@ -294,7 +314,7 @@
     </a>
     <div class="links">
       <a href="#start">Start here</a>
-      <a href="#firsttask">First task</a>
+      <a href="#pillars">Capabilities</a>
       <a href="#awareness">Stages</a>
       <a href="#reference">Reference</a>
     </div>
@@ -485,6 +505,12 @@
     </div>
   </section>
 
+  <!-- CAPABILITY PILLARS -->
+  <section id="pillars" class="sec-head"><div class="kicker">Capability map</div><h2>Six capability pillars</h2>
+    <p>The whole system rests on six capabilities. Here's exactly how each one works — traced through the
+      real Northwind Logistics deal — and where it shows up in the bowtie.</p></section>
+  <section style="padding-top:10px"><div class="pillars-grid" id="pillarsGrid"></div></section>
+
   <!-- STAGES -->
   <section class="sec-head" style="padding-bottom:0"><div class="kicker">The journey</div><h2>The seven stages of the bowtie</h2>
     <p>Each stage: what you do, what fires automatically, the fields that matter, and the mistakes to avoid. Test yourself at the end of each.</p></section>
@@ -670,6 +696,33 @@ const STAGES=[
   quiz:{q:"When should you start working the renewal?",opts:["After it expires","Early — it's auto-created at the win, dated a term out","Renewals aren't tracked"],a:1,explain:"The renewal is created on Closed Won and dated a full term ahead, so it's ready to work immediately."}}
 ];
 
+const PILLARS=[
+ {n:"01",t:"Lead-to-Revenue Lifecycle",
+  blurb:"One governed lifecycle across Lead, Contact, Opportunity &amp; Account — synced, staged and SLA-tracked.",
+  stages:["awareness","education","selection","onboard"],
+  how:"When Dana enters as a lead, <b>Lifecycle — Create &amp; Link</b> spins up a Lifecycle record and links it. The <b>Lifecycle Stage Engine</b> stamps Inquiry → Engaged → MQL with a dated milestone at each step, and <b>SLA Start</b> drops a 2-day clock at MQL. On conversion, <b>Lead Conversion Sync</b> carries the whole history onto the Contact, and the <b>Account roll-up</b> summarises every won deal — one governed thread running Lead → Contact → Opportunity → Account."},
+ {n:"02",t:"ICP Scoring &amp; Prioritisation",
+  blurb:"Firmographic, persona and composite grades auto-assigned and recalculated nightly.",
+  stages:["awareness","education"],
+  how:"Dana's industry, size and tech-stack score <b>Firmographic A</b> and <b>Technographic A</b>; her VP-Operations title maps to <b>Persona A</b>; engagement gives <b>Behavioural B</b>. The composite flow blends them into <b>ICP Grade A — “Hot ICP.”</b> The nightly recalculation jobs re-score every lead and contact, so a grade is never stale."},
+ {n:"03",t:"Multi-Touch Attribution",
+  blurb:"Lead, opportunity and activity attribution rolled up to targets and scorecards.",
+  stages:["awareness","impact"],
+  how:"The Q2 webinar that generated Dana is credited by the <b>Lead Attribution Engine</b> as a Target Attribution record. Later, every QBR logged against the account is matched to active Targets by the <b>Activity Attribution Engine</b>. The <b>Target Scorecard Status Engine</b> rolls all of it up to quota attainment with a RAG status — credit from first touch to renewal."},
+ {n:"04",t:"Forecasting &amp; Analytics",
+  blurb:"Weighted forecasts, quota-vs-attainment, and decision-ready dashboards.",
+  stages:["commit","impact"],
+  how:"Northwind's £180k deal at Negotiation gets a <b>Weighted Forecast Value</b> (amount × stage probability). <b>Sync Forecast Submission</b> rolls every rep's deals into a period forecast, and the <b>nightly Aggregate Rollup</b> totals them per manager against quota. The <b>Executive Dashboard</b> then surfaces quota-vs-bookings, win ratio and pipeline coverage — decision-ready, no spreadsheets."},
+ {n:"05",t:"Pipeline Hygiene &amp; Velocity",
+  blurb:"Stage governance, velocity stamps, next-step discipline and renewal automation.",
+  stages:["selection","commit","grow"],
+  how:"<b>Pipeline Entry</b> and <b>Stage Velocity</b> stamps time how long Northwind sits in each stage and flag stalls. <b>Stage Change Governance</b> won't let it advance to Commit without a Next Step Date; <b>Next-Step Pipeline Hygiene</b> raises a task the moment a step goes overdue. On the win, <b>Create Renewal on Close Won</b> seeds the FY27 renewal automatically — pipeline that maintains itself."},
+ {n:"06",t:"Deal Governance &amp; Approvals",
+  blurb:"MEDDPICC / BANT scoring, deal-amount validation and discount approvals.",
+  stages:["selection","commit"],
+  how:"As the rep fills the qualification fields, Northwind scores <b>MEDDPICC 87.5 🟢</b> and <b>BANT 100</b>. <b>Deal Amount Validation</b> derives MRR / ARR / ACV from recurring revenue and term, the <b>Deal Approval</b> Apex routes discount &amp; terms sign-off, and a <b>Closed Reason</b> is required before the deal can be marked Won — governance baked into every save."}
+];
+
 const FAQ=[
  ["Why didn't my ICP grade update when I edited the lead?","Grades recalc when the relevant field changes, and a nightly job re-scores everyone. If you changed something unrelated, the grade waits for its trigger or the overnight run."],
  ["Why won't Salesforce let me save my stage change?","The Stage Change Governance flow requires certain fields for that stage — e.g. a <b>Next Step Date</b> before Commit, or a <b>Closed Reason</b> to close. Fill the field it names and save again."],
@@ -721,6 +774,7 @@ $("#stages").innerHTML=STAGES.map(s=>{
     <button class="markdone" data-done="${s.id}">○ Mark complete</button>
   </div>
   <p class="purpose">${s.purpose}</p>
+  <div class="capchips"><span class="lbl">Capability pillars ›</span>${PILLARS.filter(p=>p.stages.includes(s.id)).map(p=>`<button class="capchip" data-pill="${p.n}"><b>${p.n}</b> ${p.t}</button>`).join("")}</div>
   <div class="cols2">
     <div>
       <div class="tabs" data-tabs="${s.id}">
@@ -741,6 +795,12 @@ $("#stages").innerHTML=STAGES.map(s=>{
 }).join("");
 
 // FAQ + reference
+const SNAME=Object.fromEntries(STAGES.map(s=>[s.id,s.name]));
+$("#pillarsGrid").innerHTML=PILLARS.map(p=>`<div class="pillar" id="pillar-${p.n}">
+  <div class="ptop"><div class="pnum">${p.n}</div><h4>${p.t}</h4></div>
+  <div class="blurb">${p.blurb}</div>
+  <div class="howlbl">⚙ How it works</div><div class="how">${p.how}</div>
+  <div class="pstages">${p.stages.map(id=>`<button class="pchip" data-go="${id}">${SNAME[id]}</button>`).join("")}</div></div>`).join("");
 $("#faqList").innerHTML=FAQ.map(f=>`<details><summary>${f[0]}</summary><div class="a">${f[1]}</div></details>`).join("");
 $("#refBody").innerHTML=STAGES.map(s=>`<tr data-row="${s.name} ${s.system.map(a=>a.n).join(" ")}"><td><span class="stagetag ${sideCls(s.side)}">${s.num} ${s.name}</span></td><td>${s.system.map(a=>a.n).join(" · ")}</td></tr>`).join("");
 
@@ -772,6 +832,13 @@ $$(".quiz").forEach(q=>q.addEventListener("click",e=>{const b=e.target.closest("
   q.querySelectorAll(".qopt").forEach(o=>{o.classList.remove("right","wrong");if(+o.dataset.i===correct)o.classList.add("right");});
   if(picked!==correct)b.classList.add("wrong");
   q.querySelector(".explain").classList.add("on");}));
+
+// capability chips (stage -> pillar) with highlight
+document.addEventListener("click",e=>{const b=e.target.closest(".capchip");if(!b)return;
+  const el=document.getElementById("pillar-"+b.dataset.pill);if(!el)return;
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+  el.style.transition="box-shadow .3s";el.style.boxShadow="0 0 0 3px var(--pillar)";
+  setTimeout(()=>el.style.boxShadow="",1500);});
 
 // lightbox
 const lb=$("#lb"),lbimg=$("#lbimg");
@@ -890,7 +957,8 @@ let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on
 // command palette
 const PItems=[...STAGES.map(s=>({k:"Stage",l:s.name,go:s.id})),
  {k:"Section",l:"Start here",go:"start"},{k:"Section",l:"First task",go:"firsttask"},
- {k:"Section",l:"Score simulator",go:"sim"},{k:"Section",l:"FAQ",go:"faq"},{k:"Section",l:"Automation reference",go:"reference"},
+ {k:"Section",l:"Score simulator",go:"sim"},{k:"Section",l:"Capability pillars",go:"pillars"},{k:"Section",l:"FAQ",go:"faq"},{k:"Section",l:"Automation reference",go:"reference"},
+ ...PILLARS.map(p=>({k:"Pillar",l:p.n+" — "+p.t.replace(/&amp;/g,'&'),go:"pillar-"+p.n})),
  ...GLOSSARY.map(g=>({k:"Term",l:g[0]+" — "+g[1],go:"start"}))];
 const pal=$("#pal"),palInput=$("#palInput"),palRes=$("#palRes");let pSel=0,pFiltered=[];
 function openPal(){pal.classList.add("open");palInput.value="";renderPal("");palInput.focus();}
